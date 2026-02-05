@@ -88,24 +88,4 @@
 </script>
 
 </body>
-</html>  } else {
-    // end of questions
-    answerMsg.innerHTML = "🥰 All done! Love you forever, Pathumma 💞";
-  }
-}
-
-function yesClicked() {
-  const q = document.querySelectorAll("#questionsContainer .question")[currentQuestion];
-  answerMsg.innerHTML = `<div>${q.dataset.msg}</div><button onclick="nextQ()">Next 🌹</button>`;
-}
-
-function noClicked() {
-  const q = document.querySelectorAll("#questionsContainer .question")[currentQuestion];
-  answerMsg.innerHTML = `<div>Don’t worry… I’ll wait for you always ❤️</div><button onclick="nextQ()">Next 🌹</button>`;
-}
-
-function nextQ() {
-  currentQuestion++;
-  showQuestion(currentQuestion);
-}
-</script>
+</html>
