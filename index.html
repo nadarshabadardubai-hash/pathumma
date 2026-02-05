@@ -1,159 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For My Pathumma 💖</title>
-<style>
-  body {
-    margin: 0;
-    font-family: "Poppins", sans-serif;
-    background: linear-gradient(to bottom, #ffe6f0, #fff5f7);
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-    padding: 20px;
-  }
+<button id="startBtn" onclick="showNextQuestion()">Tap Here for a Surprise 🌹</button>
 
-  .card {
-    max-width: 420px;
-    width: 100%;
-    background: white;
-    border-radius: 30px;
-    padding: 35px 25px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    position: relative;
-    z-index: 2;
-  }
-
-  h1 {
-    font-size: 32px;
-    color: #ff2e74;
-    margin-bottom: 10px;
-  }
-
-  p {
-    font-size: 16px;
-    color: #444;
-    line-height: 1.7;
-    margin-top: 15px;
-  }
-
-  button {
-    margin-top: 25px;
-    padding: 15px;
-    width: 100%;
-    border: none;
-    border-radius: 18px;
-    background: #ff2e74;
-    color: white;
-    font-size: 17px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-
-  button:hover {
-    background: #e6005c;
-  }
-
-  .hidden {
-    display: none;
-    margin-top: 25px;
-    font-size: 18px;
-    color: #222;
-    font-weight: 500;
-  }
-
-  .signature {
-    margin-top: 20px;
-    font-size: 14px;
-    color: gray;
-  }
-
-  /* Floating hearts */
-  .heart {
-    position: absolute;
-    font-size: 24px;
-    animation: floatUp linear infinite;
-  }
-
-  @keyframes floatUp {
-    0% { transform: translateY(100vh) scale(1); opacity: 1; }
-    100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
-  }
-</style>
-</head>
-<body>
-
-<div class="card">
-  <h1>My Pathumma 💖</h1>
-  <p>
-    From the moment you entered my life, everything became brighter, softer, meaningful.  
-    You are not just my Valentine, you are my forever.
-  </p>
-
-  <button onclick="showLove()">Tap Here for a Surprise 🌹</button>
-
-  <div class="hidden" id="message">
-    💌 Pathumma…  
-    I pray Allah keeps us together always.  
-    <br><br>
-    From strangers to soulmates… soon to be husband & wife ❤️  
-    <br><br>
-    I love you endlessly 🥺
-    <br><br>
+<div id="questionsContainer" class="hidden">
+  <div class="question" data-msg="Pathumma… I pray Allah keeps us together always. From strangers to soulmates… soon to be husband & wife ❤️">
     Will you be mine forever?
-    <br><br>
-    <button onclick="yesClicked()">Yes 💖</button>
-    <button onclick="noClicked()">No 😢</button>
   </div>
-
-  <div class="hidden" id="yesMsg">
-    🥰 Yay! I knew you’d say yes! Forever starts now 💞
+  <div class="question" data-msg="I can’t wait to create our beautiful future together. 💞">
+    Shall we make every moment count?
   </div>
-
-  <div class="hidden" id="noMsg">
-    😭 Don’t be shy… I’ll wait for you always ❤️
+  <div class="question" data-msg="You are my everything, and I’ll always cherish you. 🥰">
+    Promise we’ll laugh together forever?
   </div>
-
-  <div class="signature">
-    — Yours, only yours 💞
-  </div>
+  <div id="answerMsg" class="hidden"></div>
 </div>
 
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const toName = params.get("to") || "My Love";
-  document.querySelector("h1").innerText = `My ${toName} 💖`;
+const startBtn = document.getElementById("startBtn");
+const questionsContainer = document.getElementById("questionsContainer");
+const answerMsg = document.getElementById("answerMsg");
+let currentQuestion = 0;
 
-  function showLove() {
-    document.getElementById("message").style.display = "block";
-  }
+function showNextQuestion() {
+  startBtn.style.display = "none"; // hide initial button
+  questionsContainer.classList.remove("hidden");
+  showQuestion(currentQuestion);
+}
 
-  function yesClicked() {
-    document.getElementById("message").style.display = "none";
-    document.getElementById("yesMsg").style.display = "block";
+function showQuestion(index) {
+  const qs = document.querySelectorAll("#questionsContainer .question");
+  qs.forEach(q => q.style.display = "none");
+  if(index < qs.length) {
+    const q = qs[index];
+    q.style.display = "block";
+    // add Yes/No buttons dynamically
+    answerMsg.innerHTML = `<button onclick="yesClicked()">Yes 💖</button> <button onclick="noClicked()">No 😢</button>`;
+    answerMsg.classList.remove("hidden");
+  } else {
+    // end of questions
+    answerMsg.innerHTML = "🥰 All done! Love you forever, Pathumma 💞";
   }
+}
 
-  function noClicked() {
-    document.getElementById("message").style.display = "none";
-    document.getElementById("noMsg").style.display = "block";
-  }
+function yesClicked() {
+  const q = document.querySelectorAll("#questionsContainer .question")[currentQuestion];
+  answerMsg.innerHTML = `<div>${q.dataset.msg}</div><button onclick="nextQ()">Next 🌹</button>`;
+}
 
-  // Floating hearts
-  function createHeart() {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerText = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = (3 + Math.random() * 2) + "s";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 5000);
-  }
-  setInterval(createHeart, 500);
+function noClicked() {
+  const q = document.querySelectorAll("#questionsContainer .question")[currentQuestion];
+  answerMsg.innerHTML = `<div>Don’t worry… I’ll wait for you always ❤️</div><button onclick="nextQ()">Next 🌹</button>`;
+}
+
+function nextQ() {
+  currentQuestion++;
+  showQuestion(currentQuestion);
+}
 </script>
-</body>
-</html>
