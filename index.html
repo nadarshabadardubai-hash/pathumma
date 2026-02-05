@@ -1,1 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Pathumma 💖</title>
+<style>
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(to bottom, #ffe6f0, #fff5f7);
+  overflow: hidden;
+  text-align: center;
+  padding: 20px;
+}
+.card {
+  max-width: 420px;
+  width: 100%;
+  background: white;
+  border-radius: 30px;
+  padding: 35px 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  position: relative;
+  z-index: 2;
+  margin: 0 auto;
+}
+h1 { font-size: 32px; color: #ff2e74; margin-bottom: 10px; }
+p { font-size: 16px; color: #444; line-height: 1.7; margin-top: 15px; }
+button {
+  padding: 15px;
+  margin-top: 20px;
+  border: none;
+  background: #ff2e74;
+  color: white;
+  border-radius: 12px;
+  font-size: 18px;
+  cursor: pointer;
+}
+button:hover { background: #e6005c; }
+.hidden { display: none; }
+/* Floating hearts */
+.heart { position: absolute; font-size: 24px; animation: floatUp linear infinite; }
+@keyframes floatUp { 0% { transform: translateY(100vh) scale(1); opacity: 1; } 100% { transform: translateY(-50px) scale(1.5); opacity: 0; } }
+</style>
+</head>
+<body>
 
+<div class="card">
+  <h1 id="title">My Pathumma 💖</h1>
+  <p id="intro">From the moment you entered my life, everything became brighter, softer, and meaningful. You are not just my Valentine, you are my forever.</p>
+
+  <button id="startBtn">Tap Here for a Surprise 🌹</button>
+
+  <div id="questionContainer"></div>
+  <div id="finalMsg" class="hidden">
+    💞 You’re the love of my life, Pathumma! 🥰
+  </div>
+</div>
+
+<script>
+// Personalization
+const params = new URLSearchParams(window.location.search);
+const toName = params.get("to") || "My Love";
+document.getElementById("title").innerText = My ${toName} 💖;
+
+// Questions array
+const questions = [
+  { 
+    text: "Will you be mine forever?", 
+    yesMsg: "💌 Pathumma… I pray Allah keeps us together always. ❤️", 
+    noMsg: "🥺 Don’t worry… I’ll wait for you. Can you reconsider?" 
+  },
+  { 
+    text: "Shall we make every moment count?", 
+    yesMsg: "🥰 I can’t wait to create our beautiful future together. 💞", 
+    noMsg: "💖 Hmm… maybe you’ll say yes next time? Let's try again!" 
+  },
+  { 
+    text: "Promise we’ll laugh together forever?", 
+    yesMsg: "💖 You are my everything, and I’ll always cherish you. 🥰", 
+    noMsg: "😢 Aww… I know you love me deep inside, say yes?" 
+  }
+];
+
+let current = 0;
+
+// Elements
+const startBtn = document.getElementById("startBtn");
+const intro = document.getElementById("intro");
+const questionContainer = document.getElementById("questionContainer");
+const finalMsg = document.getElementById("finalMsg");
+
+// Start
+startBtn.addEventListener("click", () => {
+  startBtn.classList.add("hidden");
+  intro.classList.add("hidden");
+  showQuestion();
+});
+
+// Render each question as a new div
+function showQuestion() {
+  questionContainer.innerHTML = ""; // remove old question completely
+  if(current >= questions.length){
+    finalMsg.classList.remove("hidden");
+    return;
+  }
+  const q = questions[current];
+  const qDiv = document.createElement("div");
+  qDiv.id = "currentQuestion";
+  qDiv.innerHTML = `
+    <p>${q.text}</p>
+    <button id="yesBtn">Yes 💖</button>
+    <button id="noBtn">No 😢</button>
+  `;
+  questionContainer.appendChild(qDiv);
+
+  // Button listeners
+  document.getElementById("yesBtn").addEventListener("click", () => showResponse(q.yesMsg));
+  document.getElementById("noBtn").addEventListener("click", () => showResponse(q.noMsg));
+}
+
+// Show Yes/No response
+function showResponse(msg){
+  questionContainer.innerHTML = `
+    <p>${msg}</p>
+    <button id="nextBtn">Next 🌹</button>
+  `;
+  document.getElementById("nextBtn").addEventListener("click", () => {
+    current++;
+    showQuestion();
+  });
+}
+
+// Floating hearts
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (3 + Math.random() * 2) + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
+}
+setInterval(createHeart, 500);
+</script>
+</body>
+</html>
