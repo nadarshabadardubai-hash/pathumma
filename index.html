@@ -1,40 +1,94 @@
-<button id="startBtn" onclick="showNextQuestion()">Tap Here for a Surprise 🌹</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Pathumma 💖</title>
+<style>
+  body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(to bottom, #ffe6f0, #fff5f7);
+    text-align: center;
+    padding: 20px;
+  }
+  .hidden { display: none; }
+  button {
+    padding: 15px;
+    margin-top: 20px;
+    border: none;
+    background: #ff2e74;
+    color: white;
+    border-radius: 12px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
 
-<div id="questionsContainer" class="hidden">
-  <div class="question" data-msg="Pathumma… I pray Allah keeps us together always. From strangers to soulmates… soon to be husband & wife ❤️">
-    Will you be mine forever?
-  </div>
-  <div class="question" data-msg="I can’t wait to create our beautiful future together. 💞">
-    Shall we make every moment count?
-  </div>
-  <div class="question" data-msg="You are my everything, and I’ll always cherish you. 🥰">
-    Promise we’ll laugh together forever?
-  </div>
-  <div id="answerMsg" class="hidden"></div>
+<button id="startBtn">Tap Here for a Surprise 🌹</button>
+
+<div id="question1" class="hidden">
+  <p>Will you be mine forever?</p>
+  <button onclick="answerYes('question1')">Yes 💖</button>
+  <button onclick="answerNo('question1')">No 😢</button>
+</div>
+
+<div id="question2" class="hidden">
+  <p>Shall we make every moment count?</p>
+  <button onclick="answerYes('question2')">Yes 💖</button>
+  <button onclick="answerNo('question2')">No 😢</button>
+</div>
+
+<div id="question3" class="hidden">
+  <p>Promise we’ll laugh together forever?</p>
+  <button onclick="answerYes('question3')">Yes 💖</button>
+  <button onclick="answerNo('question3')">No 😢</button>
+</div>
+
+<div id="finalMsg" class="hidden">
+  💞 You’re the love of my life, Pathumma!  
 </div>
 
 <script>
-const startBtn = document.getElementById("startBtn");
-const questionsContainer = document.getElementById("questionsContainer");
-const answerMsg = document.getElementById("answerMsg");
-let currentQuestion = 0;
+  const startBtn = document.getElementById("startBtn");
+  const q1 = document.getElementById("question1");
+  const q2 = document.getElementById("question2");
+  const q3 = document.getElementById("question3");
+  const finalMsg = document.getElementById("finalMsg");
 
-function showNextQuestion() {
-  startBtn.style.display = "none"; // hide initial button
-  questionsContainer.classList.remove("hidden");
-  showQuestion(currentQuestion);
-}
+  let stage = 0;
+  const questions = [q1, q2, q3];
 
-function showQuestion(index) {
-  const qs = document.querySelectorAll("#questionsContainer .question");
-  qs.forEach(q => q.style.display = "none");
-  if(index < qs.length) {
-    const q = qs[index];
-    q.style.display = "block";
-    // add Yes/No buttons dynamically
-    answerMsg.innerHTML = `<button onclick="yesClicked()">Yes 💖</button> <button onclick="noClicked()">No 😢</button>`;
-    answerMsg.classList.remove("hidden");
-  } else {
+  startBtn.addEventListener("click", () => {
+    startBtn.classList.add("hidden");
+    showNext();
+  });
+
+  function showNext() {
+    if (stage < questions.length) {
+      questions[stage].classList.remove("hidden");
+    } else {
+      finalMsg.classList.remove("hidden");
+    }
+  }
+
+  function answerYes(id) {
+    document.getElementById(id).classList.add("hidden");
+    stage++;
+    showNext();
+  }
+
+  function answerNo(id) {
+    document.getElementById(id).classList.add("hidden");
+    stage++;
+    showNext();
+  }
+</script>
+
+</body>
+</html>  } else {
     // end of questions
     answerMsg.innerHTML = "🥰 All done! Love you forever, Pathumma 💞";
   }
