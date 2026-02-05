@@ -51,7 +51,11 @@ button:hover { background: #e6005c; }
 
   <button id="startBtn">Tap Here for a Surprise 🌹</button>
 
-  <div id="questionContainer"></div>
+  <div id="questionContainer" class="hidden">
+    <p id="questionText"></p>
+    <div id="answerButtons"></div>
+  </div>
+
   <div id="finalMsg" class="hidden">
     💞 You’re the love of my life, Pathumma! 🥰
   </div>
@@ -61,7 +65,7 @@ button:hover { background: #e6005c; }
 // Personalization
 const params = new URLSearchParams(window.location.search);
 const toName = params.get("to") || "My Love";
-document.getElementById("title").innerText = My ${toName} 💖;
+document.getElementById("title").innerText = `My ${toName} 💖`;
 
 // Questions array
 const questions = [
@@ -88,47 +92,47 @@ let current = 0;
 const startBtn = document.getElementById("startBtn");
 const intro = document.getElementById("intro");
 const questionContainer = document.getElementById("questionContainer");
+const questionText = document.getElementById("questionText");
+const answerButtons = document.getElementById("answerButtons");
 const finalMsg = document.getElementById("finalMsg");
 
 // Start
 startBtn.addEventListener("click", () => {
   startBtn.classList.add("hidden");
   intro.classList.add("hidden");
+  questionContainer.classList.remove("hidden");
   showQuestion();
 });
 
-// Render each question as a new div
 function showQuestion() {
-  questionContainer.innerHTML = ""; // remove old question completely
-  if(current >= questions.length){
-    finalMsg.classList.remove("hidden");
-    return;
-  }
   const q = questions[current];
-  const qDiv = document.createElement("div");
-  qDiv.id = "currentQuestion";
-  qDiv.innerHTML = `
-    <p>${q.text}</p>
-    <button id="yesBtn">Yes 💖</button>
-    <button id="noBtn">No 😢</button>
+  questionText.innerText = q.text;
+  answerButtons.innerHTML = `
+    <button onclick="answerYes()">Yes 💖</button>
+    <button onclick="answerNo()">No 😢</button>
   `;
-  questionContainer.appendChild(qDiv);
-
-  // Button listeners
-  document.getElementById("yesBtn").addEventListener("click", () => showResponse(q.yesMsg));
-  document.getElementById("noBtn").addEventListener("click", () => showResponse(q.noMsg));
 }
 
-// Show Yes/No response
-function showResponse(msg){
-  questionContainer.innerHTML = `
-    <p>${msg}</p>
-    <button id="nextBtn">Next 🌹</button>
-  `;
-  document.getElementById("nextBtn").addEventListener("click", () => {
-    current++;
+function answerYes() {
+  const q = questions[current];
+  questionText.innerText = q.yesMsg;
+  answerButtons.innerHTML = `<button onclick="nextQuestion()">Next 🌹</button>`;
+}
+
+function answerNo() {
+  const q = questions[current];
+  questionText.innerText = q.noMsg;
+  answerButtons.innerHTML = `<button onclick="nextQuestion()">Next 🌹</button>`;
+}
+
+function nextQuestion() {
+  current++;
+  if(current < questions.length) {
     showQuestion();
-  });
+  } else {
+    questionContainer.classList.add("hidden");
+    finalMsg.classList.remove("hidden");
+  }
 }
 
 // Floating hearts
